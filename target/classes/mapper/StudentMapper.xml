@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.StudentMapper">
+
+    <insert id="addStudent" parameterType="Student">
+        insert into student
+        (student_id,student_name,student_number,student_age,student_sex,student_address) values
+        (#{student_id},#{student_name},#{student_number},#{student_age},#{student_sex},#{student_address});
+    </insert>
+
+    <delete id="deleteStudentById" parameterType="int">
+        delete from student where student_id = #{ID};
+    </delete>
+
+    <update id="updateStudent" parameterType="Student">
+        update student set
+        student_name = #{student_name} , student_number = #{student_number} , student_age = #{student_age} ,
+        student_sex = #{student_sex} , student_address = #{student_address}
+        where student_id = #{student_id};
+    </update>
+
+    <select id="selectStudentById" resultType="Student">
+        select * from student where student_id = #{ID};
+    </select>
+
+    <select id="selectAllStudent" resultType="student">
+        select * from student;
+    </select>
+
+    <!--<select id="selectStudentInChoose" resultType="Student">
+        select * from student where
+        student_name = concat('%',#{queryName},'%') or student_number = concat('%',#{queryThing},'%')
+         or student_age = #{queryAge} or student_sex = #{querySex} or student_address = concat('%',#{queryAddress},'%');
+    </select>-->
+    <select id="selectStudentInChoose" resultType="Student">
+        select * from student where
+        <if test="student_name != null and student_name != ''">
+            student_name like contat('%','#{student_name}','%')
+        </if>
+        <if test="student_number != null and student_number !=''">
+            and student_number like contat('%','#{student_number}','%')
+        </if>
+    </select>
+</mapper>
